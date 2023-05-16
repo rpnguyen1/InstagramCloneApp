@@ -48,7 +48,7 @@ const Signup = ()=>{
     return (
         <div className="mycard">
             <div className="card auth-card" >
-                <h2>Bruingram!</h2>
+                <h2>Omorigram!</h2>
                 {/* <p>Please register to continue.</p> */}
                 {/* <Link to="/login" >Have an account? Log in</Link> */}
                 <form onSubmit={PostData}>

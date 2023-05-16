@@ -35,7 +35,7 @@ const NavBar = ()=>{
     return(
         <nav>
         <div className="nav-wrapper white" >
-          <Link to={state?"/":"/login"} className="brand-logo left">Bruingram!</Link>
+          <Link to={state?"/":"/login"} className="brand-logo left">Omorigram!</Link>
           <ul id="nav-mobile" className="right">
             {renderList()}
             {/* <li><Link to="/create">Create</Link></li>
