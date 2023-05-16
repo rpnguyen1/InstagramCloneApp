@@ -1,0 +1,95 @@
+GET /feed HTTP/1.1
+Host: localhost:8080
+
+###
+
+POST /feed/new HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "content": "df",
+    "user": "Hero"
+}
+
+###
+
+GET /users HTTP/1.1
+Host: localhost:8080
+
+###
+POST /signup
+Host: localhost:5000
+Content-Type: application/json
+
+{
+    "name": "new001",
+    "email": "new001@ucla.edu",
+    "password": "123456"
+}
+
+###
+POST /signin
+Host: localhost:5000
+Content-Type: application/json
+
+{
+    "name": "new001",
+    "email": "new001@ucla.edu",
+    "password": "123456"
+}
+
+###
+GET /protected
+Host: localhost:5000
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDUxNmUwY2NmNDQxOTY3MDA4OWI4NjEiLCJpYXQiOjE2ODMwNjAzNjd9.383qTWNfkpELxgE0ZqsHe0uJn7FCCYeBgxv1Q5-Fxm4
+
+{
+
+}
+### new001 account
+GET /protected
+Host: localhost:5000
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDU1OTA5NDkyZTMxMTM4MDliNDJhZjYiLCJpYXQiOjE2ODMzMjkxODN9.0_ovgTsHOWxNpfSw7Ln8z3UsT9I_RiNf3FfYJBaal-A
+
+{
+
+}
+
+###
+POST /createpost
+Host: localhost:5000
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDU1OTA5NDkyZTMxMTM4MDliNDJhZjYiLCJpYXQiOjE2ODMzMjkxODN9.0_ovgTsHOWxNpfSw7Ln8z3UsT9I_RiNf3FfYJBaal-A
+
+{
+    "title": "day 2",
+    "body": "I went out to head space"
+
+}
+
+###
+GET /allpost
+Host: localhost:5000
+//Content-Type: application/json
+//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDUxNmUwY2NmNDQxOTY3MDA4OWI4NjEiLCJpYXQiOjE2ODMwNjAzNjd9.383qTWNfkpELxgE0ZqsHe0uJn7FCCYeBgxv1Q5-Fxm4
+
+{
+  //  "title": "AMAZING TITLE 1",
+    //"body": "AMAZING DFAF one"
+
+}
+
+###
+GET /mypost
+Host: localhost:5000
+//Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDU1OTA5NDkyZTMxMTM4MDliNDJhZjYiLCJpYXQiOjE2ODMzMjkxODN9.0_ovgTsHOWxNpfSw7Ln8z3UsT9I_RiNf3FfYJBaal-A
+
+{
+  //  "title": "AMAZING TITLE 1",
+    //"body": "AMAZING DFAF one"
+
+}
