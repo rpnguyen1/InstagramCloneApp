@@ -150,21 +150,41 @@ router.delete('/deletepost/:postId',requireLogin, async (req,res)=>{
       console.log(err);
       res.status(500).json({ error: "Error finding post" });
     });
-    // Post.findOne({_id:req.params.postId})
-    // .populate("postedBy" , "_id")
-    // .exec((err,post)=>{
-    //     if(err || post){
-    //         return res.status(422).json({error:err})
-    //     }
-    //     if(post.postedBy._id.toString() === req.user._id.toString()){
-    //         post.remove()
-    //         .then(result=>{
-    //             res.json(result)
-    //         }).catch(err=>{
-    //             console.log(err)
-    //         })
-    //     }
-    // })
 })
+
+
+router.delete('/deletecomment/:postId/:commentId',requireLogin, async (req,res)=>{
+
+    Post.findOne({ _id: req.params.postId })
+    //.populate("postedBy", "_id")
+    .populate("comments.postedBy", "_id name")
+    .then(post => {
+       if (!post) {
+       return res.status(422).json({ error: "Post not found" });
+       }
+  
+
+       const comment = post.comments.find((comment)=>comment._id.toString() === req.params.commentId.toString());
+
+       if (comment.postedBy._id.toString() === req.user._id.toString()) {
+        const removeIndex = post.comments.map(comment => comment.postedBy._id.toString())
+        .indexOf(req.user._id);
+        post.comments.splice(removeIndex, 1);
+        post.save()
+        .then(result=>{res.json(result)
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json({ error: "Error removing post" });
+          });
+      } else {
+        res.status(401).json({ error: "Unauthorized to remove post" });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: "Error finding post" });
+    });
+})
+
 
 module.exports = router

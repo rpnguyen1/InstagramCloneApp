@@ -1,5 +1,6 @@
 import React,{useState, useEffect, useContext} from "react";
 import {UserContext} from '../../App' 
+import M from 'materialize-css'
 
 const Home = ()=>{
     const [data,setData] = useState([])
@@ -114,8 +115,36 @@ const Home = ()=>{
                 return item._id !== result._id
             })
             setData(newData)
+            M.toast({html: "Post Deleted Sucessfully", classes:"#69f0ae green accent-2"})
+            //M.toast.error("Post Deleted Sucessfully", {position: toast.POSITION.TOP_CENTER});
         })
     }
+
+    const deleteComment = (postId, commentId)=>{
+        fetch(`http://localhost:5000/deletecomment/${postId}/${commentId}`, {
+            method:"delete",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            }
+        }).then(res=>res.json())
+        .then(result=>{
+            console.log(result)
+
+            const newData = data.map(item=>{
+                if(item._id === result._id){
+                    result.postedBy = item.postedBy;
+                    return result
+                }else{
+                    return item
+                }
+            })
+            setData(newData)
+            M.toast({html: "Comment Deleted Sucessfully", classes:"#69f0ae green accent-2"})
+            //toast.error("COmment Deleted Sucessfully", {position: toast.POSITION.TOP_CENTER});
+        })
+    }
+
     return(
         <div className="home">
             {
@@ -154,7 +183,17 @@ const Home = ()=>{
                                 {
                                     item.comments.map(record=>{
                                         return(
-                                            <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text}</h6>
+                                            <>
+                                                <h6 
+                                                key={record._id}
+                                                ><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> :
+                                                <span>{record.text}</span>{record.postedBy._id == state._id && 
+                                                <i className="material-icons" style={{float:"right"}}
+                                                onClick={()=>deleteComment(item._id,record._id)}
+                                                >delete</i>} 
+                                                </h6>
+                                            </>
+
                                         )
                                     })
                                 }
