@@ -93,3 +93,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDU1OTA5N
     //"body": "AMAZING DFAF one"
 
 }
+
+
+###
+PUT /like
+Host: localhost:5000
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDU4MmM2ZmMzOGM1OGY3ZTFmYzRkNjAiLCJpYXQiOjE2OTAzMzI2NDl9.wgksISs3gGqI1-bHzt80CoyHz7w1op8VNSO_QtVjumc
+
+{
+  //  "title": "AMAZING TITLE 1",
+    //"body": "AMAZING DFAF one"
+    "id": "646333a284b7dd3035298356"
+}

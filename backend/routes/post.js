@@ -52,4 +52,43 @@ router.get("/mypost",requireLogin, (req,res)=>{   // posts of user who is logged
     })
 })
 
+router.put("/like",requireLogin, async (req,res)=>{
+
+    try {
+        const result = await Post.findByIdAndUpdate(
+          req.body.postId,
+          {
+            $addToSet: { likes: req.user._id }
+          },
+          {
+            new: true
+          }
+        ).exec();
+    
+        res.json(result);
+      } catch (err) {
+        res.status(422).json({ error: err.message });
+      }
+});
+
+router.put("/unlike",requireLogin, async (req,res)=>{
+
+    try {
+        const result = await Post.findByIdAndUpdate(
+          req.body.postId,
+          {
+            $pull: { likes: req.user._id }
+          },
+          {
+            new: true
+          }
+        ).exec();
+    
+        res.json(result);
+      } catch (err) {
+        res.status(422).json({ error: err.message });
+      }
+
+})
+
 module.exports = router
