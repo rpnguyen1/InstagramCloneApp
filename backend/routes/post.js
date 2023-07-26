@@ -66,9 +66,9 @@ router.put("/like",requireLogin, async (req,res)=>{
         ).exec();
     
         res.json(result);
-      } catch (err) {
-        res.status(422).json({ error: err.message });
-      }
+    } catch (err) {
+    res.status(422).json({ error: err.message });
+    }
 });
 
 router.put("/unlike",requireLogin, async (req,res)=>{
@@ -85,9 +85,9 @@ router.put("/unlike",requireLogin, async (req,res)=>{
         ).exec();
     
         res.json(result);
-      } catch (err) {
-        res.status(422).json({ error: err.message });
-      }
+    } catch (err) {
+    res.status(422).json({ error: err.message });
+    }
 
 })
 
