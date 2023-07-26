@@ -9,6 +9,7 @@ const Post = mongoose.model("Post")
 router.get('/allpost',requireLogin,(req,res)=>{
     Post.find() //no conditions to get all posts
     .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
     .then(posts=>{
         res.json(posts)
     })
@@ -63,7 +64,10 @@ router.put("/like",requireLogin, async (req,res)=>{
           {
             new: true
           }
-        ).exec();
+        )
+        .populate("comments.postedBy","_id name")
+        .populate("postedBy", "_id name")
+        .exec();
     
         res.json(result);
     } catch (err) {
@@ -82,7 +86,10 @@ router.put("/unlike",requireLogin, async (req,res)=>{
           {
             new: true
           }
-        ).exec();
+        )
+        .populate("comments.postedBy","_id name")
+        .populate("postedBy", "_id name")
+        .exec();
     
         res.json(result);
     } catch (err) {
@@ -90,5 +97,31 @@ router.put("/unlike",requireLogin, async (req,res)=>{
     }
 
 })
+
+router.put("/comment",requireLogin, async (req,res)=>{
+    const comment = {
+        text:req.body.text,
+        postedBy:req.user._id
+    }
+    try {
+        const result = await Post.findByIdAndUpdate(
+          req.body.postId,
+          {
+            $push: { comments: comment}
+          },
+          {
+            new: true
+          }
+        )
+        .populate("comments.postedBy","_id name")
+        .populate("postedBy", "_id name")
+        .exec();
+    
+        res.json(result);
+    } catch (err) {
+    res.status(422).json({ error: err.message });
+    }
+});
+
 
 module.exports = router
