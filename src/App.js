@@ -44,6 +44,11 @@ const Routing = ()=>{
         <Route path="/signup" element={<Signup />}/>
         <Route path="/create" element={<CreatePost />}/>
       </Routes>
+      <div>
+        <center>  
+          You have been living here ever since you remember
+        </center>
+      </div>
     </>
 
   )

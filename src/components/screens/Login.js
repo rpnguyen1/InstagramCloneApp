@@ -49,7 +49,7 @@ const Login = ()=>{
         <div className="mycard">
 
             <div className="card auth-card" >
-                <h2>Omorigram!</h2>
+                <h2>GRAMMM!</h2>
                 {/* <p>Please register to continue.</p> */}
                 {/* <Link to="/signup" >Don't have an account? Sign up</Link> */}
                 <form onSubmit={PostData}>

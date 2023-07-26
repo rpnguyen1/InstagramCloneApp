@@ -11,9 +11,9 @@ const NavBar = ()=>{
   const renderList = ()=>{
     if (user){
       return[
-        <li><Link to="/profile">Profile</Link></li>,
-        <li><Link to="/create">Create</Link></li>,
-        <li>
+        <li key={1} ><Link to="/profile">Profile</Link></li>,
+        <li key={2} ><Link to="/create">Create</Link></li>,
+        <li key={3} >
           <button className="btn #e53935 red darken-1" type="button" name="action" 
           onClick={()=>{
             localStorage.clear()
@@ -35,8 +35,8 @@ const NavBar = ()=>{
     return(
         <nav>
         <div className="nav-wrapper white" >
-          <Link to={state?"/":"/login"} className="brand-logo left">Omorigram!</Link>
-          <ul id="nav-mobile" className="right">
+          <Link to={state?"/":"/login"} className="brand-logo left">Omori</Link>
+          <ul id="nav-mobile" className="right" >
             {renderList()}
             {/* <li><Link to="/create">Create</Link></li>
             <li><Link to="/login">Login</Link></li>
