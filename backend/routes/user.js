@@ -65,50 +65,67 @@ Promise.all([userPromise, postsPromise])
     });
 });
 
-router.put('/follow',requireLogin, (req,res) => {
-    User.findByIdAndUpdate(req.body.followId,{
-        $addToSet:{followers:req.user._id}
-    },{
-        new:true
-    },(err,result)=>{
-        if(err){
-            return res.status(422).json({error:err})
-        }
-      User.findByIdAndUpdate(req.user._id,{
-          $addToSet:{following:req.body.followId}
-          
-      },{new:true}).select("-password").then(result=>{
-          res.json(result)
-      }).catch(err=>{
-          return res.status(422).json({error:err})
-      })
-
-    }
-    )
-})
+router.put('/follow', requireLogin, async (req, res) => {
+    try {
+      const updatedFollowId = await User.findByIdAndUpdate(
+        req.body.followId,
+        { $addToSet: { followers: req.user._id } },
+        { new: true }
+      ).exec();
   
-
-router.put('/unfollow',requireLogin,(req,res)=>{
-    User.findByIdAndUpdate(req.body.unfollowId,{
-        $pull:{followers:req.user._id}
-    },{
-        new:true
-    },(err,result)=>{
-        if(err){
-            return res.status(422).json({error:err})
-        }
-      User.findByIdAndUpdate(req.user._id,{
-          $pull:{following:req.body.unfollowId}
-          
-      },{new:true}).select("-password").then(result=>{
-          res.json(result)
-      }).catch(err=>{
-          return res.status(422).json({error:err})
-      })
-
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user._id,
+        { $addToSet: { following: req.body.followId } },
+        { new: true }
+      ).select("-password");
+  
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(422).json({ error: err.message });
     }
-    )
-})
+});
+  
+router.put('/unfollow', requireLogin, async (req, res) => {
+    try {
+      const updatedFollowId = await User.findByIdAndUpdate(
+        req.body.unfollowId,
+        { $pull: { followers: req.user._id } },
+        { new: true }
+      ).exec();
+  
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user._id,
+        { $pull: { following: req.body.unfollowId } },
+        { new: true }
+      ).select("-password");
+  
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(422).json({ error: err.message });
+    }
+});
+
+// router.put('/unfollow',requireLogin,(req,res)=>{
+//     User.findByIdAndUpdate(req.body.unfollowId,{
+//         $pull:{followers:req.user._id}
+//     },{
+//         new:true
+//     },(err,result)=>{
+//         if(err){
+//             return res.status(422).json({error:err})
+//         }
+//       User.findByIdAndUpdate(req.user._id,{
+//           $pull:{following:req.body.unfollowId}
+          
+//       },{new:true}).select("-password").then(result=>{
+//           res.json(result)
+//       }).catch(err=>{
+//           return res.status(422).json({error:err})
+//       })
+
+//     }
+//     )
+// })
   
 /*
 router.put("/like",requireLogin, async (req,res)=>{

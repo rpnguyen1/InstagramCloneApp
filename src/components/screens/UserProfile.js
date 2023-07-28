@@ -22,6 +22,29 @@ const UserProfile = ()=>{
 
     },[])
 
+    const followUser = ()=>{
+        fetch(`http://localhost:5000/follow`,{
+            method:"put",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            },
+            body:JSON.stringify({
+                followId:userid
+            })
+        }).then(res=>res.json())
+        .then(data=>{
+            console.log(data)
+            dispatch({type:"UPDATE",payload:{following:data.following, followers:data.followers}})
+            localStorage.setItem("user",JSON.stringify(data))
+            setProfile((prevState)=>{
+                return{
+                    ...prevState,
+                    user:data
+                }
+            })
+        })
+    }
     return (
         <>
         {userProfile ? 
@@ -47,13 +70,21 @@ const UserProfile = ()=>{
                                 <h6>Posts</h6>
                             </div>
                             <div  >
-                                <h5>40</h5>
+                                <h5>{userProfile.user.followers.length}</h5>
                                 <h6>followers</h6>
                             </div>
                             <div >
-                                <h5>40</h5>
+                                <h5>{userProfile.user.following.length}</h5>
                                 <h6>following</h6>
                             </div>
+
+                            <button style={{
+                                margin:"10px"
+                            }} className="btn waves-effect waves-light #64b5f6 blue darken-1"
+                                onClick={()=>followUser()}
+                                >
+                                    Follow
+                                </button>
                             {/* <h6>40 posts</h6>
                             <h6>40 followers</h6>
                             <h6>40 following</h6> */}
