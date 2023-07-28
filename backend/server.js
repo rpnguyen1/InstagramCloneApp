@@ -10,12 +10,14 @@ const PORT = 5000
 require('./models/user')
 require('./models/post')
 
+
 app.use(express.json()); // middle ware!!
 app.use(cors())
 
 
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
+app.use(require('./routes/user'))
 
 
 mongoose.model("User")
