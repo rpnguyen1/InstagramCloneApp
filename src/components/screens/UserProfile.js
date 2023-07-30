@@ -4,8 +4,10 @@ import {useParams} from 'react-router-dom'
 
 const UserProfile = ()=>{
     const {state,dispatch} = useContext(UserContext)
+    
     const [userProfile,setProfile] = useState(null)
     const {userid} = useParams()
+    const [showfollow,setShowFollow] = useState(state?!state.following.includes(userid):true)
     //console.log(userid)
     useEffect(()=>{
         fetch(`http://localhost:5000/user/${userid}`,{
@@ -40,9 +42,46 @@ const UserProfile = ()=>{
             setProfile((prevState)=>{
                 return{
                     ...prevState,
-                    user:data
+                    user:{
+                        ...prevState.user,
+                        followers:[...prevState.user.followers,data._id]
+                    }
                 }
             })
+            console.log("Hide follow")
+
+            setShowFollow(false)
+        })
+    }
+
+    const unfollowUser = ()=>{
+        fetch(`http://localhost:5000/unfollow`,{
+            method:"put",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            },
+            body:JSON.stringify({
+                unfollowId:userid
+            })
+        }).then(res=>res.json())
+        .then(data=>{
+            console.log(data)
+            dispatch({type:"UPDATE",payload:{following:data.following, followers:data.followers}})
+            localStorage.setItem("user",JSON.stringify(data))
+            setProfile((prevState)=>{
+                const newFollower = prevState.user.followers.filter(item=>item != data._id)
+
+                return{
+                    ...prevState,
+                    user:{
+                        ...prevState.user,
+                        followers:newFollower
+                    }
+                }
+            })
+            console.log("Show follow")
+            setShowFollow(true)
         })
     }
     return (
@@ -78,13 +117,25 @@ const UserProfile = ()=>{
                                 <h6>following</h6>
                             </div>
 
-                            <button style={{
+                            {showfollow?
+                                <button style={{
                                 margin:"10px"
-                            }} className="btn waves-effect waves-light #64b5f6 blue darken-1"
+                                }} className="btn waves-effect waves-light #64b5f6 blue darken-1"
                                 onClick={()=>followUser()}
                                 >
                                     Follow
                                 </button>
+                            :
+                                <button style={{
+                                margin:"10px"
+                                }} className="btn waves-effect waves-light #64b5f6 blue darken-1"
+                                onClick={()=>unfollowUser()}
+                                >
+                                    Unfollow
+                                </button>
+                            }
+                            
+       
                             {/* <h6>40 posts</h6>
                             <h6>40 followers</h6>
                             <h6>40 following</h6> */}
