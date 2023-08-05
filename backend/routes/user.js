@@ -151,4 +151,46 @@ router.put("/like",requireLogin, async (req,res)=>{
 */
 
 
+router.put('/updatepic', requireLogin, async (req,res)=>{
+  try {
+    const result = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $set: {pic:req.body.pic}
+      },
+      {
+        new: true
+      }
+    )
+
+    res.json(result);
+  } catch (err) {
+    res.status(422).json({ error: err.message });
+  }
+  
+})
+
+
+
+/*
+
+    try {
+        const result = await Post.findByIdAndUpdate(
+          req.body.postId,
+          {
+            $addToSet: { likes: req.user._id }
+          },
+          {
+            new: true
+          }
+        )
+        .populate("comments.postedBy","_id name")
+        .populate("postedBy", "_id name")
+        .exec();
+    
+        res.json(result);
+    } catch (err) {
+    res.status(422).json({ error: err.message });
+    }
+*/
 module.exports = router
