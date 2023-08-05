@@ -34,6 +34,7 @@ const Profile = ()=>{
                 </div>
                 <div>
                     <h4>{state?state.name:"loading"}</h4>
+                    <h5>{state?state.email:"loading"}</h5>
                     <div style={{display:"flex", justifyContent:"space-between", width:"108%", margin:"0px 20px auto", textAlign:"center"}}>
                         <div >
                             <h5>{myPics?myPics.length:"0"}</h5>
