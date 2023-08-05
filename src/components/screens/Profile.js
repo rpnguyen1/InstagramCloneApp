@@ -13,6 +13,7 @@ const Profile = ()=>{
         }).then(res=>res.json())
         .then(result=>{
             setPics(result.mypost)
+            console.log(state)
         })
 
     },[])
@@ -35,15 +36,15 @@ const Profile = ()=>{
                     <h4>{state?state.name:"loading"}</h4>
                     <div style={{display:"flex", justifyContent:"space-between", width:"108%", margin:"0px 20px auto", textAlign:"center"}}>
                         <div >
-                            <h5>40</h5>
+                            <h5>{myPics?myPics.length:"0"}</h5>
                             <h6>Posts</h6>
                         </div>
                         <div  >
-                            <h5>40</h5>
+                            <h5>{state?state.followers.length:"?"}</h5>
                             <h6>followers</h6>
                         </div>
                         <div >
-                            <h5>40</h5>
+                            <h5>{state?state.following.length:"?"}</h5>
                             <h6>following</h6>
                         </div>
                         {/* <h6>40 posts</h6>
