@@ -28,7 +28,7 @@ const Profile = ()=>{
                 }}>
                 <div>
                     <img style={{width:"160px",height:"160px",borderRadius:"80px"}}
-                        src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=1000&q=60"
+                        src={state?state.pic:"loading"}
                         alt="profile"
                     />
                 </div>

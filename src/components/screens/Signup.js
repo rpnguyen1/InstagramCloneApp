@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import M from 'materialize-css'
 
@@ -7,8 +7,40 @@ const Signup = ()=>{
     const [name,setName] = useState("")
     const [password,setPassword] = useState("")
     const [email,setEmail] = useState("")
-    const PostData = (event) => {
+    const [image,setImage] = useState("")
+    const [url,setUrl] = useState("")
+
+
+    useEffect(()=>{
+        if(url){
+            uploadFields()
+        }
+    },[url])
+
+    const uploadPic = () =>{
+        const data = new FormData()
+        data.append("file",image)
+        data.append("upload_preset","Insta-clone")
+        data.append("cloud_name","dksvfmzxo")
+        console.log("UPLOADING!!!")
+        fetch("https://api.cloudinary.com/v1_1/dksvfmzxo/image/upload", 
+        {method:"post",
+            body:data
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            setUrl(data.url)
+            console.log(data.url)
+        })
+        .catch (err=>{
+            console.log(err)
+            console.log("URL is " + url)
+        })
+    
         
+    }   
+
+    const uploadFields = ()=>{
         if(!/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm.test(email)){
             M.toast({html: "Invalid email", classes:"#c62828 red darken-3"})
             return;
@@ -21,7 +53,8 @@ const Signup = ()=>{
             body:JSON.stringify({
                 name,
                 password,
-                email
+                email,
+                pic:url
             })
         }).then(res=>res.json())
         .then(data=>{
@@ -37,7 +70,16 @@ const Signup = ()=>{
         .catch(err=>{
             console.log(err)
         })
-        event.preventDefault();
+    }
+
+    const PostData = (e) => {
+        if(image){
+            uploadPic()
+        }else{
+            uploadFields()
+        }
+        
+        e.preventDefault();
     }
 
     const testttt = () => {
@@ -60,6 +102,19 @@ const Signup = ()=>{
                     <br />
                     {/* <label htmlFor="password">Password:</label> */}
                     <input type="password" id="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+                    <br />
+                    <div className="file-field input-field">
+                        <div className="btn #64b5f6 blue darken-1">
+                            <span>Upload Pic</span>
+                            <input type="file" onChange={(e)=>{
+                                setImage(e.target.files[0])
+                                console.log(image)
+                                }}/>
+                        </div>
+                        <div className="file-path-wrapper">
+                            <input className="file-path validate" type="text"/>
+                        </div>
+                    </div>
                     <br />
                     <button className="btn waves-effect waves-light #64b5f6 blue lighten-2" type="submit" name="action">
                         Sign up
